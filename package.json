@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "dev": "vite",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -12,30 +14,35 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "recharts": "^2.15.3",
-    "opnet": "1.8.1-rc.12",
-    "@btc-vision/transaction": "1.8.0-rc.10",
+    "@btc-vision/bip32": "^7.1.2",
     "@btc-vision/bitcoin": "7.0.0-rc.6",
     "@btc-vision/ecpair": "^4.0.5",
-    "@btc-vision/bip32": "^7.1.2",
-    "@btc-vision/walletconnect": "^1.0.0"
+    "@btc-vision/transaction": "1.8.0-rc.10",
+    "@btc-vision/walletconnect": "^1.0.0",
+    "opnet": "1.8.1-rc.12",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
-    "vite": "^6.3.1",
-    "@vitejs/plugin-react": "^4.4.1",
-    "vite-plugin-node-polyfills": "^0.24.0",
-    "typescript": "^5.8.3",
+    "@eslint/js": "^9.25.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@types/node": "^22.15.3",
+    "@vitejs/plugin-react": "^4.4.1",
+    "crypto-browserify": "^3.12.1",
     "eslint": "^9.25.1",
-    "@eslint/js": "^9.25.1",
-    "typescript-eslint": "^8.30.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "crypto-browserify": "^3.12.1",
-    "stream-browserify": "^3.0.0"
+    "jsdom": "^28.1.0",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.1",
+    "vite-plugin-node-polyfills": "^0.24.0",
+    "vitest": "^4.0.18"
   }
 }
