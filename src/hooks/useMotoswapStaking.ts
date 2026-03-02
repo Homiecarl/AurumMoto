@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useWalletConnect } from '@btc-vision/walletconnect';
 import { ContractService } from '../services/ContractService';
+import { CONTRACT_ADDRESSES } from '../config/contracts';
 import { POLL_INTERVAL_MS } from '../config/constants';
 import { DEMO_MODE, MOCK_STAKING_DATA } from '../mock';
 import { useNetwork } from './useNetwork';
@@ -28,6 +29,9 @@ export function useMotoswapStaking(): MotoswapStakingState {
         }
 
         if (!walletAddress || !address) return;
+
+        // Contract not configured yet — stay silent (not an error, just unconfigured)
+        if (!CONTRACT_ADDRESSES.motoswapStaking) return;
 
         setLoading(true);
         setError(null);
