@@ -12,9 +12,9 @@ interface StatsRowProps {
 export function StatsRow({ data, loading }: StatsRowProps): React.JSX.Element {
     const { apyDisplay } = useAPY(data);
 
-    const stakedDisplay = data ? formatMoto(data.userInfo.amount) : '0.00';
+    const stakedDisplay = data ? formatMoto(data.stakedBalance) : '0.00';
     const rewardsDisplay = data ? formatMoto(data.pendingRewards) : '0.00';
-    const tvlDisplay = data?.poolInfo.lpSupply ? formatMoto(data.poolInfo.lpSupply) : '—';
+    const tvlDisplay = data ? formatMoto(data.totalStaked) : '—';
 
     return (
         <div className="stats-row stagger-children">
@@ -26,15 +26,15 @@ export function StatsRow({ data, loading }: StatsRowProps): React.JSX.Element {
                 highlight
             />
             <StatCard
-                label="Pending Rewards"
+                label="Claimable Rewards"
                 value={rewardsDisplay}
-                sub="Claimable MOTO"
+                sub="MOTO earned"
                 loading={loading && !data}
             />
             <StatCard
                 label="Pool APY"
                 value={apyDisplay}
-                sub="Based on current emissions"
+                sub="Proof-of-Hodl emissions"
                 loading={loading && !data}
             />
             <StatCard

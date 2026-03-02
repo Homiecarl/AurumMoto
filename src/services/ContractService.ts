@@ -1,6 +1,6 @@
 import { getContract } from 'opnet';
-import { MOTOCHEF_ABI } from '../abi/MotoChefAbi';
-import type { IMotoChef } from '../abi/MotoChefAbi';
+import { MOTOSWAP_STAKING_ABI } from '../abi/MotoChefAbi';
+import type { IMotoswapStakingContract } from '../abi/MotoChefAbi';
 import { ProviderService } from './ProviderService';
 import { CONTRACT_ADDRESSES } from '../config/contracts';
 import { networks } from '@btc-vision/bitcoin';
@@ -9,7 +9,7 @@ import { Address } from '@btc-vision/transaction';
 // Singleton contract cache — never call getContract() inside components
 export class ContractService {
     private static instance: ContractService;
-    private contracts: Map<string, IMotoChef> = new Map();
+    private contracts: Map<string, IMotoswapStakingContract> = new Map();
 
     private constructor() {}
 
@@ -20,15 +20,15 @@ export class ContractService {
         return ContractService.instance;
     }
 
-    public getMotoChef(senderAddress?: string): IMotoChef {
-        const key = `motochef:${senderAddress ?? 'anon'}`;
+    public getMotoswapStaking(senderAddress?: string): IMotoswapStakingContract {
+        const key = `staking:${senderAddress ?? 'anon'}`;
 
         if (!this.contracts.has(key)) {
             const provider = ProviderService.getInstance().getProvider();
-            const contractAddress = CONTRACT_ADDRESSES.motoChef;
+            const contractAddress = CONTRACT_ADDRESSES.motoswapStaking;
 
             if (!contractAddress) {
-                throw new Error('MotoChef contract address not configured');
+                throw new Error('Motoswap staking contract address not configured');
             }
 
             let sender: Address | undefined;
@@ -40,9 +40,9 @@ export class ContractService {
                 }
             }
 
-            const contract = getContract<IMotoChef>(
+            const contract = getContract<IMotoswapStakingContract>(
                 contractAddress,
-                MOTOCHEF_ABI,
+                MOTOSWAP_STAKING_ABI,
                 provider,
                 networks.opnetTestnet,
                 sender,
@@ -51,7 +51,7 @@ export class ContractService {
             this.contracts.set(key, contract);
         }
 
-        return this.contracts.get(key) as IMotoChef;
+        return this.contracts.get(key) as IMotoswapStakingContract;
     }
 
     public clearCache(): void {

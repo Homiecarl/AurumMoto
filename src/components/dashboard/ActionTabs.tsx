@@ -12,8 +12,8 @@ interface ActionTabsProps {
     readonly walletBalance: bigint;
     readonly txStatus: TxStatus;
     readonly onStake: (amount: bigint) => Promise<void>;
-    readonly onUnstake: (amount: bigint) => Promise<void>;
-    readonly onHarvest: () => Promise<void>;
+    readonly onUnstake: () => Promise<void>;
+    readonly onClaimRewards: () => Promise<void>;
     readonly onResetTx: () => void;
 }
 
@@ -23,7 +23,7 @@ export function ActionTabs({
     txStatus,
     onStake,
     onUnstake,
-    onHarvest,
+    onClaimRewards,
     onResetTx,
 }: ActionTabsProps): React.JSX.Element {
     const [activeTab, setActiveTab] = useState<ActiveTab>('stake');
@@ -65,10 +65,11 @@ export function ActionTabs({
                     ) : (
                         <div id="panel-unstake" role="tabpanel">
                             <UnstakePanel
-                                stakedBalance={data?.userInfo.amount ?? 0n}
+                                stakedBalance={data?.stakedBalance ?? 0n}
                                 pendingRewards={data?.pendingRewards ?? 0n}
+                                slashingFee={data?.slashingFee ?? 0n}
                                 onUnstake={onUnstake}
-                                onHarvest={onHarvest}
+                                onClaimRewards={onClaimRewards}
                                 isLoading={isLoading}
                             />
                         </div>

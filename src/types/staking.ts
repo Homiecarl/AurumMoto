@@ -1,21 +1,9 @@
-export interface UserInfo {
-    readonly amount: bigint;
-    readonly rewardDebt: bigint;
-}
-
-export interface PoolInfo {
-    readonly allocPoint: bigint;
-    readonly lastRewardBlock: bigint;
-    readonly accMotoPerShare: bigint;
-    readonly lpSupply?: bigint;
-}
-
 export interface StakingData {
-    readonly userInfo: UserInfo;
-    readonly pendingRewards: bigint;
-    readonly poolInfo: PoolInfo;
-    readonly totalAllocPoint: bigint;
-    readonly motoPerBlock: bigint;
+    readonly stakedBalance: bigint;
+    readonly pendingRewards: bigint;     // total claimable (from rewardBalance)
+    readonly totalStaked: bigint;        // total supply in staking contract
+    readonly lastInteractedBlock: bigint;
+    readonly slashingFee: bigint;        // fee for unstaking full balance now
     readonly fetchedAt: number;
 }
 

@@ -1,9 +1,9 @@
 export interface ContractAddresses {
-    readonly motoChef: string;
+    readonly motoswapStaking: string;
     readonly motoToken: string;
 }
 
 export const CONTRACT_ADDRESSES: ContractAddresses = {
-    motoChef: import.meta.env.VITE_MOTOCHEF_ADDRESS ?? '',
+    motoswapStaking: import.meta.env.VITE_MOTOSWAP_STAKING_ADDRESS ?? '',
     motoToken: import.meta.env.VITE_MOTO_TOKEN_ADDRESS ?? '',
 };

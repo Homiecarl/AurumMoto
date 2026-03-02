@@ -6,15 +6,15 @@ import { RewardsChart } from './components/dashboard/RewardsChart';
 import { RewardsHistoryTable } from './components/dashboard/RewardsHistoryTable';
 import { DemoModeBanner } from './components/dashboard/DemoModeBanner';
 import { ErrorMessage } from './components/common/ErrorMessage';
-import { useMotoChef } from './hooks/useMotoChef';
+import { useMotoswapStaking } from './hooks/useMotoswapStaking';
 import { useStakeActions } from './hooks/useStakeActions';
 import { useRewardsHistory } from './hooks/useRewardsHistory';
 import { useMotoBalance } from './hooks/useMotoBalance';
 import { DEMO_MODE } from './mock';
 
 export default function App(): React.JSX.Element {
-    const { data, loading, error } = useMotoChef();
-    const { txStatus, stake, unstake, harvest, resetTxStatus } = useStakeActions();
+    const { data, loading, error } = useMotoswapStaking();
+    const { txStatus, stake, unstake, claimRewards, resetTxStatus } = useStakeActions();
     const chartHistory = useRewardsHistory(data);
     const { balance: walletBalance } = useMotoBalance();
 
@@ -37,7 +37,7 @@ export default function App(): React.JSX.Element {
                     txStatus={txStatus}
                     onStake={stake}
                     onUnstake={unstake}
-                    onHarvest={harvest}
+                    onClaimRewards={claimRewards}
                     onResetTx={resetTxStatus}
                 />
                 <RewardsChart data={chartHistory} loading={loading} />

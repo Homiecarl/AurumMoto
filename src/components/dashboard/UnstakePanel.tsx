@@ -1,97 +1,77 @@
-import React, { useState } from 'react';
-import { Input } from '../common/Input';
+import React from 'react';
 import { Button } from '../common/Button';
-import { ErrorMessage } from '../common/ErrorMessage';
 import { formatMoto } from '../../utils/formatting';
-import { validateAmount } from '../../utils/validation';
-import { scaleUp } from '../../utils/bigint';
-import { MOTO_DECIMALS } from '../../config/constants';
 
 interface UnstakePanelProps {
     readonly stakedBalance: bigint;
     readonly pendingRewards: bigint;
-    readonly onUnstake: (amount: bigint) => Promise<void>;
-    readonly onHarvest: () => Promise<void>;
+    readonly slashingFee: bigint;
+    readonly onUnstake: () => Promise<void>;
+    readonly onClaimRewards: () => Promise<void>;
     readonly isLoading: boolean;
 }
 
 export function UnstakePanel({
     stakedBalance,
     pendingRewards,
+    slashingFee,
     onUnstake,
-    onHarvest,
+    onClaimRewards,
     isLoading,
 }: UnstakePanelProps): React.JSX.Element {
-    const [amount, setAmount] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-
-    const handleMax = (): void => {
-        const display = formatMoto(stakedBalance);
-        setAmount(display.replace(/,/g, ''));
-        setError(null);
-    };
-
-    const handleUnstake = async (): Promise<void> => {
-        const result = validateAmount(amount, stakedBalance);
-        if (!result.valid) {
-            setError(result.error);
-            return;
-        }
-        setError(null);
-        await onUnstake(result.value);
-        setAmount('');
-    };
-
-    const parsedValue = amount ? ((): bigint => {
-        try { return scaleUp(amount, MOTO_DECIMALS); } catch { return 0n; }
-    })() : 0n;
-
-    const isValid = parsedValue > 0n && parsedValue <= stakedBalance;
+    const hasStake = stakedBalance > 0n;
+    const hasRewards = pendingRewards > 0n;
+    const hasSlashing = slashingFee > 0n;
+    const netReceive = hasStake && hasSlashing ? stakedBalance - slashingFee : stakedBalance;
 
     return (
         <div className="action-panel">
             <div className="action-panel__balance-hint">
                 <span>Staked balance</span>
-                <span onClick={handleMax} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && handleMax()}>
-                    {formatMoto(stakedBalance)} MOTO
-                </span>
+                <span>{formatMoto(stakedBalance)} MOTO</span>
             </div>
 
-            <Input
-                label="Amount to Unstake"
-                value={amount}
-                onChange={(v) => { setAmount(v); setError(null); }}
-                onMax={handleMax}
-                error={error}
-                placeholder="0.00"
-                disabled={isLoading}
-            />
+            {hasSlashing && (
+                <div className="slashing-warning">
+                    <div className="slashing-warning__row">
+                        <span>Early unstake fee</span>
+                        <span className="slashing-warning__fee">
+                            -{formatMoto(slashingFee)} MOTO
+                        </span>
+                    </div>
+                    <div className="slashing-warning__row">
+                        <span>You will receive</span>
+                        <span>{formatMoto(netReceive)} MOTO</span>
+                    </div>
+                    <p className="slashing-warning__note">
+                        Fee decreases the longer you hold. Claim rewards to reset.
+                    </p>
+                </div>
+            )}
 
             <Button
                 variant="danger"
                 size="xl"
-                onClick={handleUnstake}
-                disabled={!isValid || isLoading}
+                onClick={onUnstake}
+                disabled={!hasStake || isLoading}
                 loading={isLoading}
-                aria-label="Unstake MOTO tokens"
+                aria-label="Unstake all MOTO tokens"
             >
-                Unstake MOTO
+                Unstake All MOTO
             </Button>
 
-            {pendingRewards > 0n && (
+            {hasRewards && (
                 <Button
                     variant="secondary"
                     size="lg"
-                    onClick={onHarvest}
+                    onClick={onClaimRewards}
                     disabled={isLoading}
                     loading={isLoading}
-                    aria-label={`Harvest ${formatMoto(pendingRewards)} MOTO rewards`}
+                    aria-label={`Claim ${formatMoto(pendingRewards)} MOTO rewards`}
                 >
-                    Harvest {formatMoto(pendingRewards)} MOTO
+                    Claim {formatMoto(pendingRewards)} MOTO
                 </Button>
             )}
-
-            <ErrorMessage message={error} />
         </div>
     );
 }
