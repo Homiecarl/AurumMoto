@@ -1,5 +1,5 @@
 import { JSONRpcProvider } from 'opnet';
-import { TESTNET_CONFIG } from '../config/networks';
+import { MAINNET_CONFIG } from '../config/networks';
 import { RPC_TIMEOUT_MS } from '../config/constants';
 import { networks } from '@btc-vision/bitcoin';
 
@@ -20,8 +20,8 @@ export class ProviderService {
     public getProvider(): JSONRpcProvider {
         if (!this.provider) {
             this.provider = new JSONRpcProvider({
-                url: TESTNET_CONFIG.rpcUrl,
-                network: networks.opnetTestnet,
+                url: MAINNET_CONFIG.rpcUrl,
+                network: networks.bitcoin,
                 timeout: RPC_TIMEOUT_MS,
             });
         }

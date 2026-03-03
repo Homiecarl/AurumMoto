@@ -44,7 +44,7 @@ export class ContractService {
                 contractAddress,
                 MOTOSWAP_STAKING_ABI,
                 provider,
-                networks.opnetTestnet,
+                networks.bitcoin,
                 sender,
             );
 
@@ -78,7 +78,7 @@ export class ContractService {
                 contractAddress,
                 OP_20_ABI,
                 provider,
-                networks.opnetTestnet,
+                networks.bitcoin,
                 sender,
             );
 

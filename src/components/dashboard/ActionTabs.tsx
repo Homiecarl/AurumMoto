@@ -27,7 +27,7 @@ export function ActionTabs({
     onResetTx,
 }: ActionTabsProps): React.JSX.Element {
     const [activeTab, setActiveTab] = useState<ActiveTab>('stake');
-    const isLoading = txStatus.state === 'simulating' || txStatus.state === 'pending';
+    const isLoading = txStatus.state === 'simulating' || txStatus.state === 'approving' || txStatus.state === 'pending';
 
     return (
         <>
