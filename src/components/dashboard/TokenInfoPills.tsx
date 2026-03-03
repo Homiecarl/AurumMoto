@@ -1,32 +1,57 @@
 import React from 'react';
 import { formatMoto } from '../../utils/formatting';
 import type { MotoTokenInfo } from '../../hooks/useMotoTokenInfo';
+import type { PillTokenInfo } from '../../hooks/usePillTokenInfo';
 
 interface TokenInfoPillsProps {
-    readonly info: MotoTokenInfo;
+    readonly motoInfo: MotoTokenInfo;
+    readonly pillInfo: PillTokenInfo;
 }
 
-export function TokenInfoPills({ info }: TokenInfoPillsProps): React.JSX.Element | null {
-    if (!info.symbol && info.totalSupply === null) return null;
+export function TokenInfoPills({ motoInfo, pillInfo }: TokenInfoPillsProps): React.JSX.Element | null {
+    const hasMoto = Boolean(motoInfo.symbol);
+    const hasPill = Boolean(pillInfo.symbol);
+
+    if (!hasMoto && !hasPill) return null;
 
     return (
-        <div className="token-pills">
-            {info.symbol && (
-                <span className="token-pill token-pill--gold">{info.symbol}</span>
+        <div className="token-pills-row">
+            {hasMoto && (
+                <div className="token-pills">
+                    <span className="token-pill token-pill--gold">{motoInfo.symbol}</span>
+                    {motoInfo.name && (
+                        <span className="token-pill">{motoInfo.name}</span>
+                    )}
+                    {motoInfo.totalSupply !== null && (
+                        <span className="token-pill">
+                            Supply&nbsp;{formatMoto(motoInfo.totalSupply)}
+                        </span>
+                    )}
+                    {motoInfo.decimals !== null && (
+                        <span className="token-pill">{motoInfo.decimals}&nbsp;decimals</span>
+                    )}
+                </div>
             )}
-            {info.name && (
-                <span className="token-pill">{info.name}</span>
+
+            {hasMoto && hasPill && <div className="token-pills-divider" />}
+
+            {hasPill && (
+                <div className="token-pills">
+                    <span className="token-pill token-pill--green">{pillInfo.symbol}</span>
+                    {pillInfo.name && (
+                        <span className="token-pill">{pillInfo.name}</span>
+                    )}
+                    {pillInfo.totalSupply !== null && (
+                        <span className="token-pill">
+                            Supply&nbsp;{formatMoto(pillInfo.totalSupply)}
+                        </span>
+                    )}
+                    {pillInfo.decimals !== null && (
+                        <span className="token-pill">{pillInfo.decimals}&nbsp;decimals</span>
+                    )}
+                </div>
             )}
-            {info.totalSupply !== null && (
-                <span className="token-pill">
-                    Supply&nbsp;{formatMoto(info.totalSupply)}
-                </span>
-            )}
-            {info.decimals !== null && (
-                <span className="token-pill">
-                    {info.decimals}&nbsp;decimals
-                </span>
-            )}
+
             <span className="token-pill token-pill--purple">Bitcoin L1</span>
         </div>
     );

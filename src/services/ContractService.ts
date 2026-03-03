@@ -88,6 +88,40 @@ export class ContractService {
         return this.contracts.get(key) as IOP20Contract;
     }
 
+    public getPillToken(senderAddress?: string): IOP20Contract {
+        const key = `pilltoken:${senderAddress ?? 'anon'}`;
+
+        if (!this.contracts.has(key)) {
+            const provider = ProviderService.getInstance().getProvider();
+            const contractAddress = CONTRACT_ADDRESSES.pillToken;
+
+            if (!contractAddress) {
+                throw new Error('PILL token contract address not configured');
+            }
+
+            let sender: Address | undefined;
+            if (senderAddress) {
+                try {
+                    sender = Address.fromString(senderAddress);
+                } catch {
+                    sender = undefined;
+                }
+            }
+
+            const contract = getContract<IOP20Contract>(
+                contractAddress,
+                OP_20_ABI,
+                provider,
+                networks.opnetTestnet,
+                sender,
+            );
+
+            this.contracts.set(key, contract);
+        }
+
+        return this.contracts.get(key) as IOP20Contract;
+    }
+
     public clearCache(): void {
         this.contracts.clear();
     }

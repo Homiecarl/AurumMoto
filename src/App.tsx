@@ -14,6 +14,7 @@ import { useRewardsHistory } from './hooks/useRewardsHistory';
 import { useMotoBalance } from './hooks/useMotoBalance';
 import { useBitcoinStats } from './hooks/useBitcoinStats';
 import { useMotoTokenInfo } from './hooks/useMotoTokenInfo';
+import { usePillTokenInfo } from './hooks/usePillTokenInfo';
 import { DEMO_MODE } from './mock';
 
 export default function App(): React.JSX.Element {
@@ -22,7 +23,8 @@ export default function App(): React.JSX.Element {
     const chartHistory = useRewardsHistory(data);
     const { balance: walletBalance } = useMotoBalance();
     const btcStats = useBitcoinStats();
-    const tokenInfo = useMotoTokenInfo();
+    const motoInfo = useMotoTokenInfo();
+    const pillInfo = usePillTokenInfo();
 
     return (
         <AppShell btcPriceUsd={btcStats.btcPriceUsd}>
@@ -32,8 +34,8 @@ export default function App(): React.JSX.Element {
                 <ErrorMessage message={`Data fetch error: ${error}`} />
             )}
 
-            {/* MOTO OP20 token metadata pills */}
-            <TokenInfoPills info={tokenInfo} />
+            {/* OP20 token metadata pills */}
+            <TokenInfoPills motoInfo={motoInfo} pillInfo={pillInfo} />
 
             {/* MOTO staking stats */}
             <StatsRow data={data} loading={loading} />
