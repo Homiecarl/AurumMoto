@@ -100,7 +100,7 @@ describe('useStakeActions', () => {
                 allowance: mockAllowance,
                 increaseAllowance: vi.fn(() => Promise.resolve({ sendTransaction: mockSendTx })),
             })),
-        } as ReturnType<typeof ContractService.getInstance>);
+        } as unknown as ReturnType<typeof ContractService.getInstance>);
 
         const { result } = renderHook(() => useStakeActions());
 
