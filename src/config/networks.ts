@@ -6,13 +6,16 @@ export interface NetworkConfig {
     readonly explorerUrl: string;
 }
 
+export const TESTNET_CONFIG: NetworkConfig = {
+    name: 'OPNet Testnet',
+    rpcUrl: 'https://testnet.opnet.org',
+    explorerUrl: 'https://mempool.space/signet/tx/',
+};
+
 export const MAINNET_CONFIG: NetworkConfig = {
     name: 'OPNet Mainnet',
     rpcUrl: 'https://mainnet.opnet.org',
     explorerUrl: 'https://mempool.space/tx/',
 };
 
-// Keep alias so TxStatusModal import doesn't break
-export const TESTNET_CONFIG = MAINNET_CONFIG;
-
-export const DEFAULT_NETWORK = networks.bitcoin;
+export const DEFAULT_NETWORK = networks.opnetTestnet;

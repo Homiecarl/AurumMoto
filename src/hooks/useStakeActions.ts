@@ -50,7 +50,7 @@ export function useStakeActions(): StakeActionsState {
                     mldsaSigner: null,
                     refundTo: walletAddress,
                     maximumAllowedSatToSpend: MAX_ALLOWED_SAT,
-                    network: networks.bitcoin,
+                    network: networks.opnetTestnet,
                 });
             }
 
@@ -63,7 +63,7 @@ export function useStakeActions(): StakeActionsState {
                 mldsaSigner: null,
                 refundTo: walletAddress,
                 maximumAllowedSatToSpend: MAX_ALLOWED_SAT,
-                network: networks.bitcoin,
+                network: networks.opnetTestnet,
             });
 
             setTxStatus({ state: 'success', txHash: receipt?.transactionId ?? '' });
@@ -93,7 +93,7 @@ export function useStakeActions(): StakeActionsState {
                 mldsaSigner: null,
                 refundTo: walletAddress,
                 maximumAllowedSatToSpend: MAX_ALLOWED_SAT,
-                network: networks.bitcoin,
+                network: networks.opnetTestnet,
             });
 
             setTxStatus({
@@ -126,7 +126,7 @@ export function useStakeActions(): StakeActionsState {
                 mldsaSigner: null,
                 refundTo: walletAddress,
                 maximumAllowedSatToSpend: MAX_ALLOWED_SAT,
-                network: networks.bitcoin,
+                network: networks.opnetTestnet,
             });
 
             setTxStatus({

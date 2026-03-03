@@ -670,3 +670,82 @@
     margin-top: var(--space-1);
     line-height: 1.5;
 }
+
+/* ── BTC Price Pill (TopBar) ── */
+.price-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: rgba(247, 147, 26, 0.08);
+    border: 1px solid rgba(247, 147, 26, 0.35);
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #f7931a;
+    white-space: nowrap;
+    transition: box-shadow var(--transition-base);
+}
+
+.price-pill:hover {
+    box-shadow: 0 0 12px rgba(247, 147, 26, 0.2);
+}
+
+.price-pill__btc {
+    font-size: 0.9em;
+    opacity: 0.85;
+}
+
+.price-pill__value {
+    letter-spacing: -0.01em;
+}
+
+/* ── Token Info Pills ── */
+.token-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.token-pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--surface-overlay);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.token-pill--gold {
+    background: rgba(212, 170, 80, 0.1);
+    border-color: var(--border-gold);
+    color: var(--accent-gold);
+}
+
+.token-pill--purple {
+    background: rgba(124, 95, 245, 0.1);
+    border-color: var(--border-purple);
+    color: var(--accent-purple);
+}
+
+/* ── Bitcoin Stats Section ── */
+.btc-stats-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.section-heading {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
