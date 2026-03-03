@@ -7,7 +7,7 @@ export interface StakingData {
     readonly fetchedAt: number;
 }
 
-export type TxState = 'idle' | 'simulating' | 'pending' | 'success' | 'error';
+export type TxState = 'idle' | 'simulating' | 'approving' | 'pending' | 'success' | 'error';
 
 export interface TxStatus {
     readonly state: TxState;

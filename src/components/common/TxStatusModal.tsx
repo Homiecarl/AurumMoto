@@ -17,6 +17,12 @@ const STATUS_CONFIG = {
         desc: 'Preparing your transaction...',
         color: 'var(--color-info)',
     },
+    approving: {
+        icon: '◌',
+        title: 'Approving Token',
+        desc: 'Step 1 of 2: Approve MOTO spending in your wallet...',
+        color: 'var(--color-info)',
+    },
     pending: {
         icon: '⟳',
         title: 'Transaction Pending',
@@ -43,7 +49,7 @@ export function TxStatusModal({ status, onClose }: TxStatusModalProps): React.JS
     const config = STATUS_CONFIG[status.state];
     if (!config) return null;
 
-    const isLoading = status.state === 'simulating' || status.state === 'pending';
+    const isLoading = status.state === 'simulating' || status.state === 'approving' || status.state === 'pending';
     const desc = status.state === 'error' ? (status.message ?? 'An unknown error occurred.') : config.desc;
 
     return (

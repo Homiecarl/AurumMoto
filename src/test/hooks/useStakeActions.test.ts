@@ -20,16 +20,37 @@ vi.mock('../../services/ContractService', () => ({
                     Promise.resolve({ sendTransaction: mockSendTx }),
                 ),
             })),
+            getMotoToken: vi.fn(() => ({
+                allowance: vi.fn(() =>
+                    Promise.resolve({ properties: { remaining: 0n } }),
+                ),
+                increaseAllowance: vi.fn(() =>
+                    Promise.resolve({ sendTransaction: mockSendTx }),
+                ),
+            })),
         })),
     },
 }));
 
 vi.mock('@btc-vision/walletconnect', () => ({
-    useWalletConnect: vi.fn(() => ({ walletAddress: 'bc1test' })),
+    useWalletConnect: vi.fn(() => ({ walletAddress: 'bc1test', address: {} })),
 }));
 
 vi.mock('@btc-vision/bitcoin', () => ({
     networks: { opnetTestnet: {} },
+}));
+
+vi.mock('@btc-vision/transaction', () => ({
+    Address: {
+        fromString: vi.fn(() => ({})),
+    },
+}));
+
+vi.mock('../../config/contracts', () => ({
+    CONTRACT_ADDRESSES: {
+        motoswapStaking: '0xdeadbeef',
+        motoToken: '0xcafebabe',
+    },
 }));
 
 // Import after mocks are set up
@@ -38,7 +59,10 @@ import { useWalletConnect } from '@btc-vision/walletconnect';
 
 describe('useStakeActions', () => {
     beforeEach(() => {
-        vi.mocked(useWalletConnect).mockReturnValue({ walletAddress: 'bc1test' } as ReturnType<typeof useWalletConnect>);
+        vi.mocked(useWalletConnect).mockReturnValue({
+            walletAddress: 'bc1test',
+            address: {},
+        } as ReturnType<typeof useWalletConnect>);
         mockSendTx.mockResolvedValue({ transactionId: 'txhash123' });
     });
 
@@ -59,6 +83,34 @@ describe('useStakeActions', () => {
         });
 
         expect(result.current.txStatus.txHash).toBe('txhash123');
+    });
+
+    it('skips approval when allowance is already sufficient', async () => {
+        const { ContractService } = await import('../../services/ContractService');
+        const mockAllowance = vi.fn(() =>
+            Promise.resolve({ properties: { remaining: 999_00000000n } }),
+        );
+        vi.mocked(ContractService.getInstance).mockReturnValueOnce({
+            getMotoswapStaking: vi.fn(() => ({
+                stake: vi.fn(() => Promise.resolve({ sendTransaction: mockSendTx })),
+                unstake: vi.fn(() => Promise.resolve({ sendTransaction: mockSendTx })),
+                claimRewards: vi.fn(() => Promise.resolve({ sendTransaction: mockSendTx })),
+            })),
+            getMotoToken: vi.fn(() => ({
+                allowance: mockAllowance,
+                increaseAllowance: vi.fn(() => Promise.resolve({ sendTransaction: mockSendTx })),
+            })),
+        } as ReturnType<typeof ContractService.getInstance>);
+
+        const { result } = renderHook(() => useStakeActions());
+
+        await act(async () => {
+            await result.current.stake(1_00000000n);
+        });
+
+        await waitFor(() => {
+            expect(result.current.txStatus.state).toBe('success');
+        });
     });
 
     it("after unstake(), txStatus.state becomes 'success'", async () => {
@@ -104,7 +156,10 @@ describe('useStakeActions', () => {
     });
 
     it("sets error state immediately when walletAddress is empty", async () => {
-        vi.mocked(useWalletConnect).mockReturnValue({ walletAddress: '' } as ReturnType<typeof useWalletConnect>);
+        vi.mocked(useWalletConnect).mockReturnValue({
+            walletAddress: '',
+            address: {},
+        } as ReturnType<typeof useWalletConnect>);
 
         const { result } = renderHook(() => useStakeActions());
 
